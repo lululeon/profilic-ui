@@ -2,22 +2,23 @@ import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
 import { withRouter } from 'react-router';
 
-const SearchForm = () => (
-  <form className="form-inline my-2 my-lg-0">
-    <input className="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search"/>
-    <button className="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>
-  </form>
-);
+//TODO: prop search := [null|basic|responsive]
+// const SearchForm = () => (
+//   <form className="form-inline my-2 my-lg-0">
+//     <input className="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search"/>
+//     <button className="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>
+//   </form>
+// );
 
 @withRouter
-export default class Navigation extends Component {
+export default class PrfNavBar extends Component {
   constructor(props) {
     super(props);
     this.state = {
       isAuthed: false,
       username: ''
     };
-    this.prfClient = this.props.authHandler; //new PrfHttpClient();
+    this.prfClient = this.props.authHandler;
     this.authPaths = this.props.authPaths;
     this.unlisten = this.props.history.listen((location, action) => {
       this.prfClient.authenticate(this.checkAuthResult);
@@ -34,12 +35,9 @@ export default class Navigation extends Component {
   }
 
   checkAuthResult = (responseData) => {
-    console.log('Navigation::checkAuthResult');
     if (!responseData) {
-      console.log('Navigation::checkAuthResult - invalid session');
       this.setState({ isAuthed: false });
     } else {
-      console.log('Navigation::checkAuthResult - still authed');
       let uname = this.prfClient.getAuthedUsername(); 
       let uid = this.prfClient.getAuthedID();
       this.setState({ isAuthed: true, username: uname });
@@ -54,6 +52,7 @@ export default class Navigation extends Component {
   }
 
   render() {
+    let navItemsWithKeys = this.props.navItems.map( (n,idx) => ( {...n, key:idx} ) );
     return (
       <nav className="navbar navbar-expand-lg navbar-light bg-light">
         <button className="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
@@ -64,12 +63,15 @@ export default class Navigation extends Component {
         ): null}
         <div className="collapse navbar-collapse" id="navbarSupportedContent">
           <ul className="navbar-nav mr-auto">
-            {this.props.navItems}
+            {navItemsWithKeys}
           </ul>
           {(this.state.isAuthed) ? (
             <ul className="navbar-nav mr-0">
               <li className="nav-item">
-                <span className="navbar-text">Logged in as </span><Link className="nav-link prf-nav-username" to={`${this.authPaths.successfulLoginPath}/${this.state.username}`}>{this.state.username}</Link>
+                <span className="navbar-text">Logged in as </span>
+              </li>
+              <li className="nav-item">
+                <Link className="nav-link prf-nav-username" to={`${this.authPaths.successfulLoginPath}/${this.state.username}`}>{this.state.username}</Link>
               </li>
               <li className="nav-item">
                 <Link className="nav-link" to="#" onClick={this.doLogout}>Log Out</Link>
@@ -88,6 +90,6 @@ export default class Navigation extends Component {
           {/* TODO: search form goes here */}
         </div>
       </nav>
-        );
-      }
+    );
+  }
 }

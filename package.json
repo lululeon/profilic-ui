@@ -2,6 +2,7 @@
   "name": "profilic-ui",
   "description": "React widgets for user profiles",
   "version": "0.0.1",
+  "author": "lululeon <thelululeon@gmail.com>",
   "devDependencies": {
     "babel-core": "^6.26.0",
     "babel-eslint": "^8.2.1",
@@ -29,9 +30,11 @@
     "react-router-dom": "^4.0.0"
   },
   "scripts": {
-    "build": "webpack --watch",
-    "start": "webpack-dev-server --hot"
+    "builddemo": "webpack --watch",
+    "startdemo": "webpack-dev-server --hot",
+    "build": "babel lib/ --out-dir dist",
+    "prepare": "npm run build"
   },
-  "main": "index.js",
+  "main": "./dist/index.js",
   "license": "MIT"
 }

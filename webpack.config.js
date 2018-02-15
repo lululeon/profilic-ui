@@ -1,10 +1,9 @@
 var webpack = require('webpack');
-// var CopyWebpackPlugin = require('copy-webpack-plugin');
 require('dotenv').config();
 
 module.exports = {
   context: __dirname,
-  entry: ["react-hot-loader/patch", "./src/_demo/demo.js"],
+  entry: ["react-hot-loader/patch", "./lib/_demo/demo.js"],
   module: {
     loaders: [
       {
@@ -24,17 +23,7 @@ module.exports = {
           console.log('==>>> Begin compile at ' + new Date());
           callback();
       })
-    }/*,      
-    new webpack.EnvironmentPlugin([
-       'NODE_ENV', 'HOST', 'PORT'
-    ]),
-    new CopyWebpackPlugin([
-      { context: 'src/app/static_css/font-awesome/css/', from: '*.min.css', to: 'css/font-awesome/css/'},
-      { context: 'src/app/static_css/font-awesome/fonts/', from: '*.*', to: 'css/font-awesome/fonts/'},
-      { context: 'src/app/static_css/', from: '*.css', to: 'css/'},
-      { context: 'src/app/static_js/', from: '*.js', to: 'js/'},
-      { from: 'src/app/index.html', to: 'index.html'}
-    ])*/
+    }
   ],
   output: {
     path: __dirname + "/demo",
